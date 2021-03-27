@@ -5,6 +5,8 @@
 }
 #include "coro_jmp.h"
 
+
+
 /**
  * You can compile and run this example using the commands:
  *
@@ -16,7 +18,7 @@
  * A function, called from inside of coroutines, and even
  * recursively.
  */
-static void
+void
 other_function(int arg)
 {
 	printf("Coro %d: entered function, deep = %d, arg = %d\n", curr_coro_i,
@@ -39,7 +41,8 @@ other_function(int arg)
  * the same time, but with different struct coro. Here you
  * implement your solution.
  */
-static void
+
+void
 my_coroutine()
 {
 	/*
@@ -65,10 +68,13 @@ my_coroutine()
 int
 main(int argc, char **argv)
 {
+    coro_count = argc - 1;
+    coros = (struct coro *) malloc(sizeof(struct coro) * coro_count);
 	for (int i = 0; i < coro_count; ++i) {
 		if (coro_init(&coros[i]) != 0)
 			break;
 	}
+
 	coro_call(my_coroutine);
 	printf("Finished\n");
 	return 0;
